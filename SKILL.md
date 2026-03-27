@@ -12,6 +12,44 @@ metadata:
 
 Store and retrieve cognitive memories using MuninnDB - the cognitive database with temporal priority, Hebbian learning, and automatic association building.
 
+## PREREQUISITE: MuninnDB Installation
+
+Before using this skill, MuninnDB must be installed and running.
+
+### Check if MuninnDB is installed and running:
+
+Run the check script:
+```bash
+~/.opencode/skill/muninn-memory/scripts/check.sh
+```
+
+Or manually:
+```bash
+which muninn || ls ~/.local/bin/muninn 2>/dev/null
+curl -s http://localhost:8475/api/stats 2>/dev/null || echo "not running"
+```
+
+### If NOT installed:
+
+1. **Install MuninnDB:**
+   ```bash
+   curl -fsSL https://muninndb.com/install.sh | sh
+   ```
+
+2. **Start MuninnDB:**
+   ```bash
+   muninn start
+   ```
+
+3. **Initialize (connect AI tools):**
+   ```bash
+   muninn init
+   ```
+
+See: https://muninndb.com/getting-started
+
+**IMPORTANT:** If MuninnDB is not installed, inform the user that this skill requires MuninnDB and ask if they want to install it. Provide the installation commands above.
+
 ## Configuration
 
 Two config files:
