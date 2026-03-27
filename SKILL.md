@@ -1,3 +1,13 @@
+---
+name: muninn-memory
+description: Cognitive memory skill for MuninnDB - store and retrieve memories with temporal priority, Hebbian learning, and automatic associations.
+license: MIT
+compatibility: opencode
+metadata:
+  audience: developers
+  workflow: memory-management
+---
+
 # Muninn Memory
 
 Store and retrieve cognitive memories using MuninnDB - the cognitive database with temporal priority, Hebbian learning, and automatic association building.

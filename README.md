@@ -11,6 +11,22 @@ This skill enables AI agents to store and retrieve memories using MuninnDB's cog
 - **Extract Session Insights** - Harvest key learnings from conversations
 - **Manage Vaults** - Organize memories into project-specific vaults
 
+## Installation
+
+### Option 1: Via npx (recommended)
+```bash
+npx add-skill https://github.com/webboty/muninn-memory-skill
+```
+
+### Option 2: Manual Installation
+```bash
+# Clone the repository
+git clone https://github.com/webboty/muninn-memory-skill.git ~/.opencode/skill/muninn-memory
+
+# Copy example configs and customize
+cp ~/.opencode/skill/muninn-memory/examples/config.json.example ~/.opencode/skill/muninn-memory/config.json
+```
+
 ## Features
 
 ### Cognitive Memory
