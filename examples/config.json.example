@@ -1,0 +1,13 @@
+{
+  "api": {
+    "endpoint": "http://localhost:8475",
+    "timeout": 30000
+  },
+  "mcp": {
+    "endpoint": "http://localhost:8750/mcp",
+    "enabled": false
+  },
+  "preference": "api",
+  "default_vault": "default",
+  "project_vaults": {}
+}
