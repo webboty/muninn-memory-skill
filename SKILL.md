@@ -50,6 +50,17 @@ See: https://muninndb.com/getting-started
 
 **IMPORTANT:** If MuninnDB is not installed, inform the user that this skill requires MuninnDB and ask if they want to install it. Provide the installation commands above.
 
+### Windows Support
+
+On Windows, **WSL (Windows Subsystem for Linux) is recommended** for best compatibility. Alternatively, use PowerShell scripts:
+
+- `scripts/check.ps1` - Check if MuninnDB is installed/running
+
+For PowerShell, run:
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\check.ps1
+```
+
 ## Configuration
 
 Two config files:
