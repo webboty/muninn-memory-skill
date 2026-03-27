@@ -1,6 +1,7 @@
 # Ignore real config files - these contain sensitive data
 config.json
-vaults/
+vaults/*
+!vaults/.gitkeep
 
 # Ignore cookies
 *.txt
