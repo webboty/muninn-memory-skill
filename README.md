@@ -59,27 +59,74 @@ git clone https://github.com/webboty/muninn-memory-skill.git ~/.opencode/skill/m
 cp ~/.opencode/skill/muninn-memory/examples/config.json.example ~/.opencode/skill/muninn-memory/config.json
 ```
 
+## After Installation - Required Setup
+
+After installing the skill, you MUST create config files. The skill will not work without them:
+
+### 1. Create main config
+```bash
+# Find where the skill is installed (depends on agent)
+# Common locations:
+# - ~/.agents/skills/muninn-memory/
+# - ~/.opencode/skill/muninn-memory/
+# - .agents/skills/muninn-memory/
+
+# Copy and edit the example
+cp examples/config.json.example config.json
+```
+
+### 2. Edit config.json
+```bash
+# Set your API endpoint
+./config.sh set-api-endpoint http://localhost:8475
+
+# Or manually edit config.json:
+# - api.endpoint: your MuninnDB URL
+# - default_vault: vault name to use by default
+```
+
+### 3. Create vault configs
+```bash
+# Create a vault config
+./vaults.sh create my-vault
+
+# Add your API key (generate via: muninn api-key create --vault my-vault)
+./vaults.sh add-key my-vault "mk_your_key_here"
+```
+
+### 4. Map projects to vaults (optional)
+```bash
+./config.sh add-project "my-project" "my-vault"
+```
+
 ## Quick Start
+
+**Note:** The skill may be installed in different locations depending on the agent. Common paths:
+- `~/.agents/skills/muninn-memory/` (npx install)
+- `~/.opencode/skill/muninn-memory/` (manual)
+- `.agents/skills/muninn-memory/` (project local)
+
+Replace `<skill-dir>` below with your actual installation path.
 
 ### 1. Configure the Skill
 ```bash
 # Set your API endpoint
-~/.opencode/skill/muninn-memory/config.sh set-api-endpoint http://localhost:8475
+<skill-dir>/config.sh set-api-endpoint http://localhost:8475
 
 # Set your default vault
-~/.opencode/skill/muninn-memory/config.sh set-default-vault default
+<skill-dir>/config.sh set-default-vault default
 
 # Map a project to a vault
-~/.opencode/skill/muninn-memory/config.sh add-project "my-project" "my-project"
+<skill-dir>/config.sh add-project "my-project" "my-project"
 ```
 
 ### 2. Add Vaults & API Keys
 ```bash
 # Create vault config
-~/.opencode/skill/muninn-memory/vaults.sh create my-project
+<skill-dir>/vaults.sh create my-project
 
 # Add API key (generate via: muninn api-key create --vault my-project)
-~/.opencode/skill/muninn-memory/vaults.sh add-key my-project "mk_your_key_here"
+<skill-dir>/vaults.sh add-key my-project "mk_your_key_here"
 ```
 
 ### 3. Use It
@@ -117,11 +164,20 @@ The skill automatically resolves the right vault:
 
 ### Config Management
 ```bash
-config.sh show                    # Show config
-config.sh set-api-endpoint <url> # API endpoint
-config.sh set-preference <api|mcp> # Engine preference
-config.sh set-default-vault <v>   # Default vault
-config.sh add-project <p> <v>     # Project → vault mapping
+<skill-dir>/config.sh show                    # Show config
+<skill-dir>/config.sh set-api-endpoint <url> # API endpoint
+<skill-dir>/config.sh set-preference <api|mcp> # Engine preference
+<skill-dir>/config.sh set-default-vault <v>   # Default vault
+<skill-dir>/config.sh add-project <p> <v>      # Project → vault mapping
+```
+
+### Vault Management
+```bash
+<skill-dir>/vaults.sh list              # List vaults
+<skill-dir>/vaults.sh create <vault>    # Create vault config
+<skill-dir>/vaults.sh add-key <v> <key> # Add API key
+<skill-dir>/vaults.sh remove <vault>    # Remove vault
+<skill-dir>/vaults.sh show <vault>      # Show vault details
 ```
 
 ### Vault Management
@@ -142,6 +198,11 @@ vaults.sh show <vault>      # Show vault details
 | MCP      | 8750 | AI agent tools |
 
 ## File Structure
+
+**Where the skill is installed** (varies by agent):
+- `~/.agents/skills/muninn-memory/` (via `npx skills add`)
+- `~/.opencode/skill/muninn-memory/` (manual install)
+- `.agents/skills/muninn-memory/` (project-local)
 
 ```
 muninn-memory/
