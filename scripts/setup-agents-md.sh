@@ -16,16 +16,22 @@ else
     AGENTS_MD="$TARGET/agents.md"
 fi
 
-# MuninnDB instructions to add
-MUNINN_SECTION='## MuninnDB Memory
+# MuninnDB instructions to add - stronger language
+MUNINN_SECTION='## MuninnDB Memory (MANDATORY)
 
-Before responding to user queries, proactively check MuninnDB for relevant knowledge:
-- Query the project vault (or vaults defined below) for context related to the task
-- If information is not known, state that clearly rather than guessing
-- Use MuninnDB recall to find relevant memories before answering
+You MUST check MuninnDB before answering any question about the user, their preferences, or project context:
+- ALWAYS query MuninnDB first using muninn_recall before responding
+- Never guess user information - if not in Muninn, say "I don'\''t know"
+- Use the project vault (or vaults listed below) for queries
 
 ### Vaults
 - default'
+
+# Optional: vault name from argument
+if [ -n "$2" ]; then
+    MUNINN_SECTION="${MUNINN_SECTION}
+- $2"
+fi
 
 # Check if agents.md exists
 if [ ! -f "$AGENTS_MD" ]; then

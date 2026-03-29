@@ -1,22 +1,26 @@
 # Add MuninnDB instructions to agents.md - PowerShell version
 
-$SkillDir = "$env:USERPROFILE\.opencode\skill\muninn-memory"
 $ProjectDir = if ($args[0]) { $args[0] } else { "." }
+$VaultName = if ($args[1]) { $args[1] } else { "" }
 
 $AgentsMd = Join-Path $ProjectDir "agents.md"
 
 $MuninnSection = @"
 
-## MuninnDB Memory
+## MuninnDB Memory (MANDATORY)
 
-Before responding to user queries, proactively check MuninnDB for relevant knowledge:
-- Query the project vault (or vaults defined below) for context related to the task
-- If information is not known, state that clearly rather than guessing
-- Use MuninnDB recall to find relevant memories before answering
+You MUST check MuninnDB before answering any question about the user, their preferences, or project context:
+- ALWAYS query MuninnDB first using muninn_recall before responding
+- Never guess user information - if not in Muninn, say "I don't know"
+- Use the project vault (or vaults listed below) for queries
 
 ### Vaults
 - default
 "@
+
+if ($VaultName) {
+    $MuninnSection = $MuninnSection -replace "(### Vaults\r?\n- default)", "`$1`n- $VaultName"
+}
 
 if (-not (Test-Path $AgentsMd)) {
     Write-Host "Creating $AgentsMd with MuninnDB instructions..."
