@@ -1,21 +1,34 @@
 # Muninn Memory Skill
 
-A cognitive memory system for AI agents using MuninnDB - the world's first cognitive database with temporal priority, Hebbian learning, and automatic association building.
+A skill that adds **intelligent memory management** on top of MuninnDB for AI agents.
 
-## What This Skill Does
+## What This Skill Adds on Top of MuninnDB
 
-This skill enables AI agents to store and retrieve memories using MuninnDB's cognitive memory capabilities:
+This skill extends MuninnDB with:
 
-- **Remember** - Store important information with concepts, tags, and confidence levels
-- **Recall** - Find relevant memories using cognitive search (not just keyword matching)
-- **Extract Session Insights** - Harvest key learnings from conversations
-- **Manage Vaults** - Organize memories into project-specific vaults
+| Feature | What It Does |
+|---------|--------------|
+| **Session Memory Extraction** | Automatically extract key insights, decisions, and facts from conversations |
+| **Smart Deduplication** | Check if memory already exists before storing |
+| **Project-Based Vaults** | Auto-detect vault from working directory (e.g., `Demo-Research/` → `demo-research` vault) |
+| **Config Management** | CLI tools for managing config and vaults (`config.sh`, `vaults.sh`) |
+| **Security-First Design** | API keys stored separately, never exposed to the LLM |
+| **Cross-Platform** | Bash scripts for macOS/Linux, PowerShell for Windows |
+
+### What MuninnDB Already Provides
+
+- **Cognitive Memory** - Temporal priority, Hebbian learning, ACT-R scoring
+- **Multi-Vault** - Isolated namespaces per project
+- **REST API** - Port 8475 for storage/retrieval
+- **MCP Tools** - Native integration with Claude, Cursor, etc.
+
+This skill wraps MuninnDB with **workflow automation** and **security** that MuninnDB doesn't provide out of the box.
 
 ## Installation
 
 ### Option 1: Via npx (recommended)
 ```bash
-npx add-skill https://github.com/webboty/muninn-memory-skill
+npx skills add webboty/muninn-memory-skill
 ```
 
 ### Option 2: Manual Installation
@@ -27,28 +40,9 @@ git clone https://github.com/webboty/muninn-memory-skill.git ~/.opencode/skill/m
 cp ~/.opencode/skill/muninn-memory/examples/config.json.example ~/.opencode/skill/muninn-memory/config.json
 ```
 
-## Features
-
-### Cognitive Memory
-- **Temporal Priority** - Frequently accessed memories rank higher over time
-- **Hebbian Learning** - Memories recalled together build associations automatically
-- **ACT-R Scoring** - Deterministic, mathematical relevance scoring
-- **No Embeddings Required** - Works with BM25 full-text search
-
-### Multi-Vault Support
-- Separate vaults for different projects
-- Project-to-vault mapping based on working directory
-- API key authentication per vault
-
-### Security
-- API keys stored in separate vault config files (not in main config)
-- Keys never exposed to the LLM - used only in local curl commands
-- Bearer token authentication
-
 ## Quick Start
 
 ### 1. Configure the Skill
-
 ```bash
 # Set your API endpoint
 ~/.opencode/skill/muninn-memory/config.sh set-api-endpoint http://localhost:8475
@@ -61,41 +55,63 @@ cp ~/.opencode/skill/muninn-memory/examples/config.json.example ~/.opencode/skil
 ```
 
 ### 2. Add Vaults & API Keys
-
 ```bash
-# Create vault config (without key first)
+# Create vault config
 ~/.opencode/skill/muninn-memory/vaults.sh create my-project
 
-# Add API key (generate via muninn CLI: muninn api-key create --vault my-project)
+# Add API key (generate via: muninn api-key create --vault my-project)
 ~/.opencode/skill/muninn-memory/vaults.sh add-key my-project "mk_your_key_here"
 ```
 
 ### 3. Use It
 
-The skill activates when you say things like:
+The skill activates when you say:
 - "remember that..." / "store this..."
 - "recall memories about..."
-- "what do you know about..."
 - "extract memories from this session"
+- "what do you know about..."
+
+## Key Features Explained
+
+### Session Memory Extraction
+
+When you say "extract memories from this session", the skill:
+1. Gathers recent conversation context
+2. Analyzes for decisions, facts, preferences, insights
+3. **Checks for duplicates** before storing
+4. Stores to the correct vault based on project
+
+### Project-Based Vaults
+
+The skill automatically resolves the right vault:
+1. User specifies explicitly: "save to project-x vault"
+2. Detects from working directory: `/path/to/my-project/` → `my-project` vault
+3. Falls back to default vault
+
+### Security-First Design
+
+- API keys stored in `vaults/*.json` (not in main config)
+- Keys injected via bash at runtime - LLM never sees them
+- `.gitignore` excludes real config files from git
 
 ## Commands Reference
 
 ### Config Management
 ```bash
-~/.opencode/skill/muninn-memory/config.sh show                    # Show config
-~/.opencode/skill/muninn-memory/config.sh set-api-endpoint <url>   # Set API endpoint
-~/.opencode/skill/muninn-memory/config.sh set-preference <api|mcp> # API or MCP
-~/.opencode/skill/muninn-memory/config.sh set-default-vault <v>   # Set default vault
-~/.opencode/skill/muninn-memory/config.sh add-project <p> <v>      # Project → vault
+config.sh show                    # Show config
+config.sh set-api-endpoint <url> # API endpoint
+config.sh set-preference <api|mcp> # Engine preference
+config.sh set-default-vault <v>   # Default vault
+config.sh add-project <p> <v>     # Project → vault mapping
 ```
 
 ### Vault Management
 ```bash
-~/.opencode/skill/muninn-memory/vaults.sh list              # List vaults
-~/.opencode/skill/muninn-memory/vaults.sh create <vault>    # Create vault config
-~/.opencode/skill/muninn-memory/vaults.sh add-key <v> <key> # Add API key
-~/.opencode/skill/muninn-memory/vaults.sh remove <vault>    # Remove vault
-~/.opencode/skill/muninn-memory/vaults.sh show <vault>      # Show vault details
+vaults.sh list              # List vaults
+vaults.sh create <vault>    # Create vault config
+vaults.sh add-key <v> <key> # Add API key
+vaults.sh remove <vault>    # Remove vault
+vaults.sh show <vault>      # Show vault details
 ```
 
 ## MuninnDB Endpoints
@@ -106,57 +122,31 @@ The skill activates when you say things like:
 | Web UI   | 8476 | Browser dashboard |
 | MCP      | 8750 | AI agent tools |
 
-## Memory Fields
-
-| Field | Type | Description |
-|-------|------|-------------|
-| concept | string | Short label (what it's about) |
-| content | string | The memory itself |
-| tags | array | Labels for filtering |
-| confidence | float | 0.0-1.0 certainty |
-| type | string | fact, decision, observation, preference, issue, task |
-
-## Examples
-
-### Store a Memory
-```bash
-curl -s http://localhost:8475/api/engrams \
-  -X POST -H "Content-Type: application/json" \
-  -H "Authorization: Bearer mk_xxx..." \
-  -d '{
-    "vault": "my-project",
-    "concept": "user preference",
-    "content": "User prefers dark mode",
-    "tags": ["preference", "ui"],
-    "confidence": 0.9,
-    "type": "preference"
-  }'
-```
-
-### Recall Memories
-```bash
-curl -s http://localhost:8475/api/activate \
-  -X POST -H "Content-Type: application/json" \
-  -H "Authorization: Bearer mk_xxx..." \
-  -d '{
-    "context": ["user preferences"],
-    "vault": "my-project",
-    "limit": 5
-  }'
-```
-
 ## File Structure
 
 ```
 muninn-memory/
-├── SKILL.md              # This file
-├── config.json           # Main config (copy from examples)
-├── config.sh             # Config manager script
+├── SKILL.md              # Skill instructions (for AI agent)
+├── README.md             # This file (for humans)
+├── config.sh             # Config manager (Bash)
+├── vaults.sh            # Vault manager (Bash)
+├── scripts/
+│   ├── check.ps1        # Health check (PowerShell)
+│   ├── config.ps1        # Config manager (PowerShell)
+│   └── vaults.ps1       # Vault manager (PowerShell)
 ├── vaults/               # Vault configs (API keys here)
-│   └── default.json      # Example vault config (copy from examples)
-└── examples/             # Example files (remove real data)
+└── examples/            # Example configs
     ├── config.json.example
     └── vault.json.example
+```
+
+## Windows Support
+
+On Windows, use WSL or PowerShell scripts in `scripts/`:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\check.ps1
+powershell -ExecutionPolicy Bypass -File scripts\config.ps1 show
 ```
 
 ## Security Notes
@@ -174,3 +164,8 @@ muninn-memory/
 ## License
 
 MIT License - Feel free to use and modify!
+
+## Links
+
+- [MuninnDB](https://muninndb.com)
+- [Skill Repository](https://github.com/webboty/muninn-memory-skill)
