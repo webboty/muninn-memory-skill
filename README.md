@@ -24,6 +24,25 @@ This skill extends MuninnDB with:
 
 This skill wraps MuninnDB with **workflow automation** and **security** that MuninnDB doesn't provide out of the box.
 
+### Auto-Setup agents.md
+
+This skill can also set up your project's `agents.md` with MuninnDB instructions:
+
+```bash
+# Add MuninnDB instructions to agents.md in current directory
+~/.opencode/skill/muninn-memory/scripts/setup-agents-md.sh
+
+# Or specify a directory
+~/.opencode/skill/muninn-memory/scripts/setup-agents-md.sh /path/to/project
+```
+
+This will:
+1. Create `agents.md` if it doesn't exist
+2. Append MuninnDB instructions if `agents.md` exists but doesn't have them
+3. Skip if MuninnDB section already present
+
+The instructions tell agents to proactively check MuninnDB before answering questions.
+
 ## Installation
 
 ### Option 1: Via npx (recommended)
