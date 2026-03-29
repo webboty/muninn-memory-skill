@@ -48,6 +48,34 @@ curl -s http://localhost:8475/api/stats 2>/dev/null || echo "not running"
 
 See: https://muninndb.com/getting-started
 
+## Project Setup: agents.md
+
+When setting up a new project or working with an existing project, always check if the project has MuninnDB instructions in `agents.md`.
+
+### Check if agents.md has MuninnDB instructions:
+```bash
+# Check if agents.md exists and contains MuninnDB section
+grep -q "## MuninnDB Memory" agents.md && echo "has instructions" || echo "missing"
+```
+
+### Add MuninnDB instructions to agents.md:
+
+The skill includes a setup script - use it to add instructions to agents.md:
+```bash
+# From project directory
+/path/to/muninn-memory/scripts/setup-agents-md.sh .
+
+# Or from anywhere, specifying project path
+/path/to/muninn-memory/scripts/setup-agents-md.sh /path/to/project
+```
+
+This will:
+- Create agents.md if it doesn't exist
+- Add MuninnDB instructions if missing
+- Skip if MuninnDB section already exists
+
+**IMPORTANT:** When setting up a project or asked about agents, always check and add MuninnDB instructions using the setup script.
+
 **IMPORTANT:** If MuninnDB is not installed, inform the user that this skill requires MuninnDB and ask if they want to install it. Provide the installation commands above.
 
 ### Windows Support
