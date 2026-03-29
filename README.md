@@ -10,7 +10,7 @@ This skill extends MuninnDB with:
 |---------|--------------|
 | **Session Memory Extraction** | Automatically extract key insights, decisions, and facts from conversations |
 | **Smart Deduplication** | Check if memory already exists before storing |
-| **Project-Based Vaults** | Auto-detect vault from working directory (e.g., `Demo-Research/` → `demo-research` vault) |
+| **Project-Based Vaults** | Auto-detect vault from working directory (e.g., `my-project/` → `my-project` vault) |
 | **Config Management** | CLI tools for managing config and vaults (`config.sh`, `vaults.sh`) |
 | **Security-First Design** | API keys stored separately, never exposed to the LLM |
 | **Cross-Platform** | Bash scripts for macOS/Linux, PowerShell for Windows |

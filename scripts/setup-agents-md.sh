@@ -4,7 +4,6 @@
 # If a file is passed, use that. If a directory is passed, use directory/agents.md
 # If nothing passed, uses current directory
 
-SKILL_DIR="$HOME/.opencode/skill/muninn-memory"
 TARGET="${1:-.}"
 
 # If TARGET is a file, use it directly. If directory, append agents.md

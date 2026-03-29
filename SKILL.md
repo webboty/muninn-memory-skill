@@ -103,7 +103,7 @@ Two config files:
   "preference": "api",
   "default_vault": "default",
   "project_vaults": {
-    "Demo-Research": "demo-research"
+    "my-project": "my-project"
   }
 }
 ```
